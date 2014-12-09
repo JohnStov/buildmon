@@ -11,9 +11,9 @@ def initialize():
 if __name__ == '__main__':
     initialize()
 
-    Test.test_all()
+    #Test.test_all()
 
     ip = HostInfo.getIpAddress()
     say('running at ip address {0}'.format(ip))
-    lcd.set_cursor_position(0,1)
+    lcd.set_cursor_position(0,0)
     lcd.write(ip)
