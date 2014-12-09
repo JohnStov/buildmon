@@ -21,10 +21,12 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Connection.py" />
     <Compile Include="HostInfo.py" />
     <Compile Include="Lights.py" />
     <Compile Include="Monitor.py" />
     <Compile Include="Speech.py" />
+    <Compile Include="TeamCity.py" />
     <Compile Include="Test.py" />
   </ItemGroup>
   <ItemGroup>
