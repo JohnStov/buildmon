@@ -18,12 +18,11 @@ lastBuildId = None
 def set_state(build):
     global teamCity, lastBuildId
 
+    if lastBuildId == build['id']:
+        return
+    lastBuildId = build['id']
+
     if teamCity.build_failed(build):
-        if lastBuildId == build['id']:
-            return
-
-        lastBuildId = build['id']
-
         say ('the build is broken')
         Display.rgb(255, 0, 0)
         Lights.broken_build()
