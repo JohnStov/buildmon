@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{57d0ee49-925b-463f-a198-4c9d2237071d}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>HostInfo.py</StartupFile>
+    <StartupFile>Monitor.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,10 +21,17 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Config.py" />
     <Compile Include="Connection.py" />
+    <Compile Include="Display.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="HostInfo.py" />
     <Compile Include="Lights.py" />
     <Compile Include="Monitor.py" />
+    <Compile Include="Platform.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Speech.py" />
     <Compile Include="TeamCity.py" />
     <Compile Include="Test.py" />

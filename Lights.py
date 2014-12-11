@@ -1,15 +1,19 @@
-import RPi.GPIO as GPIO
 import time
+import Platform
 
-# we have to use BCM mode to stay compatible with the dot3k
-GPIO.setmode(GPIO.BCM)
+if Platform.is_raspberrypi():
+    import RPi.GPIO as GPIO
+    # we have to use BCM mode to stay compatible with the dot3k
+    GPIO.setmode(GPIO.BCM)
 
 lamps = [6, 13, 19, 26]
-for lamp in lamps:
-    GPIO.setup(lamp, GPIO.OUT)
+if Platform.is_raspberrypi():
+    for lamp in lamps:
+        GPIO.setup(lamp, GPIO.OUT)
+
 
 def set_lamp(lamp_id, state):
-    if lamp_id >= 0 and lamp_id < len(lamps):
+    if Platform.is_raspberrypi() and lamp_id >= 0 and lamp_id < len(lamps):
         GPIO.output(lamps[lamp_id], state)
     
 def all_off():
