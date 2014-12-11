@@ -1,11 +1,13 @@
 from Connection import Connection
 
 class TeamCity:
-    def __init__(self, url):
+    def __init__(self, url, build_type):
         self.connection = Connection(url)
         root = self.connection.get_href("/guestAuth/app/rest", {})
         if not 'TeamCity REST API' in root:
             raise ConnectionError
+
+        self.build_type = build_type 
 
     def get_projects(self):
         projects = self.connection.get_href_json("/guestAuth/app/rest/projects")["project"]
@@ -22,8 +24,8 @@ class TeamCity:
     def get_build_types(self):
         return self.connection.get_href_json("/guestAuth/app/rest/buildTypes")["buildType"]
     
-    def get_buildType(self, project_details, build_type_id):
-        for build_type in project_details["buildTypes"]["buildType"]:
+    def get_buildType(self, build_type_id):
+        for build_type in self.get_build_types():
             if build_type["id"] == build_type_id:
                 return self.connection.get_href_json(build_type["href"])
         return None
@@ -33,7 +35,7 @@ class TeamCity:
         return self.connection.get_href_json(href)["build"]
 
     def get_latest_build(self):
-        builds = self.get_builds(self.buildType)
+        builds = self.get_builds(self.build_type)
         if builds == None or len(builds) == 0:
             return None
         return self.get_build_details(builds[0])
