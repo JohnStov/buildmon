@@ -23,12 +23,12 @@ def set_state(build):
     lastBuildId = build['id']
 
     if teamCity.build_failed(build):
-        say ('the build is broken')
+        say ('build {0} failed'.format(build['number']))
         Display.rgb(255, 0, 0)
         Lights.broken_build()
     else:
         Display.rgb(0, 255, 0)
-        say ('the build succeeded')
+        say ('build {0} succeeded'.format(build['number']))
         Lights.build_good()
 
 def report_status():
@@ -53,9 +53,21 @@ if __name__ == '__main__':
     Display.set_cursor_position(0,0)
     Display.write(ip)
 
+    while teamCity == None:
+        try:
+            teamCity = TeamCity(Config.Url, Config.BuildType)
+        except Exception:
+            Display.set_cursor_position(0, 1)
+            Display.write(' No Connection ')
+            say('failed to connect to server at {0}'.format(Config.Url))
+            say('trying again in one minute')
+            time.sleep(60)
+    
+    
+    Display.set_cursor_position(0, 1)
+    Display.write('   Connected     ')
     say('connecting to server at {0}'.format(Config.Url))
     say('monitoring build {0}'.format(Config.BuildType))
-    teamCity = TeamCity(Config.Url, Config.BuildType)
     
     while True:
         report_status()
