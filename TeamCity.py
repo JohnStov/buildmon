@@ -1,13 +1,22 @@
 from Connection import Connection
 
+class NoConnection(Exception):
+    pass
+
+class NoBuild(Exception):
+    pass
+
 class TeamCity:
     def __init__(self, url, build_type_id):
         self.connection = Connection(url)
         root = self.connection.get_href("/guestAuth/app/rest", {})
         if not 'TeamCity REST API' in root:
-            raise ConnectionError
+            raise NoConnection
 
-        self.build_type = self.get_build_type(build_type_id)
+        try:
+            self.build_type = self.get_build_type(build_type_id)
+        except Exception:
+            raise NoBuild
 
     def get_projects(self):
         projects = self.connection.get_href_json("/guestAuth/app/rest/projects")["project"]
