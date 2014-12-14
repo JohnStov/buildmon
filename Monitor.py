@@ -34,23 +34,24 @@ def set_state(build):
 def connect():
     global teamCity
 
-    try:
-        teamCity = TeamCity(Config.Url, Config.BuildType)
-    except NoConnection:
-        Display.set_cursor_position(0, 1)
-        Display.write(' No Connection ')
-        say('failed to connect to server at {0}'.format(Config.Url))
-    except NoBuild:
-        Display.set_cursor_position(0, 1)
-        Display.write('Bad BuildType')
-        say('could not find build type {0}'.format(Config.BuildType))
+    while teamCity == None:
+        try:
+            teamCity = TeamCity(Config.Url, Config.BuildType)
+        except NoConnection:
+            Display.set_cursor_position(0, 1)
+            Display.write(' No Connection ')
+            say('failed to connect to server at {0}'.format(Config.Url))
+        except NoBuild:
+            Display.set_cursor_position(0, 1)
+            Display.write('Bad BuildType')
+            say('could not find build type {0}'.format(Config.BuildType))
         
-    if teamCity == None:
-        say('trying again in one minute')
-        time.sleep(60)
-    else:
-        Display.set_cursor_position(0, 1)
-        Display.write('   Connected     ')
+        if teamCity == None:
+            say('trying again in one minute')
+            time.sleep(60)
+        else:
+            Display.set_cursor_position(0, 1)
+            Display.write('   Connected     ')
 
 def disconnect():
     global teamCity
@@ -73,14 +74,25 @@ def report_status():
             currentBuildId = build['id']
             say('building')
 
+def check_connection():
+    ip = None
+    while (ip == None):
+        try:
+            ip = HostInfo.getIpAddress()
+            say('running at ip address {0}'.format(ip))
+            Display.set_cursor_position(0,0)
+            Display.write(ip)
+        except Exception:
+            Display.set_cursor_position(0, 1)
+            Display.write(' No Connection ')
+            say('failed to connect to network')
+            say('trying again in one minute')
+            time.sleep(60)
+
 
 if __name__ == '__main__':
     initialize()
-
-    ip = HostInfo.getIpAddress()
-    say('running at ip address {0}'.format(ip))
-    Display.set_cursor_position(0,0)
-    Display.write(ip)
+    check_connection()
 
     say('connecting to server at {0}'.format(Config.Url))
     say('monitoring build {0}'.format(Config.BuildType))

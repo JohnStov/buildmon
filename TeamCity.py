@@ -9,7 +9,12 @@ class NoBuild(Exception):
 class TeamCity:
     def __init__(self, url, build_type_id):
         self.connection = Connection(url)
-        root = self.connection.get_href("/guestAuth/app/rest", {})
+
+        try:
+            root = self.connection.get_href("/guestAuth/app/rest", {})
+        except Exception:
+            raise NoConnection
+
         if not 'TeamCity REST API' in root:
             raise NoConnection
 
