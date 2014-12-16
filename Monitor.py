@@ -15,9 +15,10 @@ def initialize():
 teamCity = None
 currentBuildId = None
 lastBuildId = None
+lastBrokenBuildId = None
 
 def set_state(build):
-    global teamCity, lastBuildId
+    global teamCity, lastBuildId, lastBrokenBuildId
 
     if lastBuildId == build['id']:
         return
@@ -26,19 +27,25 @@ def set_state(build):
     if teamCity.build_failed(build):
         failedTests = len(teamCity.get_failed_tests(build))
         if failedTests > 0:
-            say('build {0}, {1} tests failed'.format(build['number'], failedTests))
+            say('build {0} finished, {1} tests failed'.format(build['number'], failedTests))
             Display.rgb(255, 255, 0)
             Lights.broken_test()
         else:
             say ('build {0} failed'.format(build['number']))
             Display.rgb(255, 0, 0)
             Lights.broken_build()
-        breakages = teamCity.get_checkins(build)
-        say ('{0} broke the build'.format(breakages))
+        if lastBrokenBuildId == None:
+            lastBrokenBuildId = build['id']
+            for breaker in teamCity.get_checkins(build):
+                say ('{0} broke the build'.format(breaker))
     else:
         Display.rgb(0, 255, 0)
-        say ('build {0} succeeded'.format(build['number']))
+        say ('build {0} finished'.format(build['number']))
         Lights.build_good()
+        if lastBrokenBuildId != None:
+            for fixer in teamCity.get_checkins(build):
+                say ('{0} fixed the build'.format(fixer))
+        lastBrokenBuildId = None
 
 def connect():
     global teamCity
