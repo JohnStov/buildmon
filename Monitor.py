@@ -4,6 +4,7 @@ import Config
 from TeamCity import TeamCity, NoConnection, NoBuild
 import Lights
 import Display
+import datetime
 import time
 
 def initialize():
@@ -16,7 +17,26 @@ teamCity = None
 currentBuildId = None
 lastBuildId = None
 lastBrokenBuildId = None
+awake = True
 
+def is_awake():
+    global awake
+    now = datetime.datetime.now()
+    if now.date().weekday() < 5 and Config.StartTime < now.time() and Config.StopTime > now.time():
+        if not awake:
+            say('good morning')
+            Display.rgb(255, 255, 255)
+            awake = True
+    else:
+        if awake:
+            say('good night')
+            Lights.all_off()
+            Display.rgb(0, 0, 0)
+            Display.set_cursor_position(0, 1)
+            Display.write('   Sleeping    ')
+            awake = False
+    return awake
+    
 def set_state(build):
     global teamCity, lastBuildId, lastBrokenBuildId
 
@@ -114,7 +134,8 @@ if __name__ == '__main__':
     say('monitoring build {0}'.format(Config.BuildType))
     
     while True:
-        connect()
-        report_status()
-        disconnect()
-        time.sleep(Config.SleepSeconds)
+        if is_awake():
+            connect()
+            report_status()
+            disconnect()
+            time.sleep(Config.SleepSeconds)
