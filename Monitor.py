@@ -7,6 +7,7 @@ import Display
 import time
 
 def initialize():
+    Display.rgb(255, 255, 255)
     say('Hello')
     Display.clear()
     Display.write("     Hello!     ")
@@ -23,9 +24,17 @@ def set_state(build):
     lastBuildId = build['id']
 
     if teamCity.build_failed(build):
-        say ('build {0} failed'.format(build['number']))
-        Display.rgb(255, 0, 0)
-        Lights.broken_build()
+        failedTests = len(teamCity.get_failed_tests(build))
+        if failedTests > 0:
+            say('build {0}, {1} tests failed'.format(build['number'], failedTests))
+            Display.rgb(255, 255, 0)
+            Lights.broken_test()
+        else:
+            say ('build {0} failed'.format(build['number']))
+            Display.rgb(255, 0, 0)
+            Lights.broken_build()
+        breakages = teamCity.get_checkins(build)
+        say ('{0} broke the build'.format(breakages))
     else:
         Display.rgb(0, 255, 0)
         say ('build {0} succeeded'.format(build['number']))
