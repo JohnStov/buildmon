@@ -87,13 +87,10 @@ class TeamCity:
 
         return failed
 
-    def get_checkins(self, builds):
+    def get_checkins(self, build):
         checkins = []
-        for build in builds:
-            checkin = build["lastChanges"]["change"][0]["username"]
-            if checkin not in checkins:
-                checkins.append(checkin)
-        checkins.reverse()
+        for checkin in build["lastChanges"]["change"]:
+            checkins.append(checkin["username"])
         return checkins
 
     def close(self):

@@ -33,8 +33,8 @@ def set_state(build):
             say ('build {0} failed'.format(build['number']))
             Display.rgb(255, 0, 0)
             Lights.broken_build()
-        breakages = teamCity.get_checkins(build)
-        say ('{0} broke the build'.format(breakages))
+        for breakage in teamCity.get_checkins(build):
+            say ('{0} broke the build'.format(breakage))
     else:
         Display.rgb(0, 255, 0)
         say ('build {0} succeeded'.format(build['number']))
