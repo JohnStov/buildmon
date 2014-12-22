@@ -84,6 +84,11 @@ class TeamCity:
             for test in tests["testOccurrence"]:
                 if not test["status"] == "SUCCESS":
                     failed.append(test)
+        while tests.has_key("nextHref"):
+            tests = self.connection.get_href_json(tests["nextHref"])
+            for test in tests["testOccurrence"]:
+                if not test["status"] == "SUCCESS":
+                    failed.append(test)
 
         return failed
 

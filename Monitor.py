@@ -5,6 +5,7 @@ from TeamCity import TeamCity, NoConnection, NoBuild
 import Lights
 import Display
 import time
+import Missile
 
 def initialize():
     Display.rgb(255, 255, 255)
@@ -15,9 +16,19 @@ def initialize():
 teamCity = None
 currentBuildId = None
 lastBuildId = None
+buildBreakers = None
 
-def set_state(build):
-    global teamCity, lastBuildId
+def target_missile(name):
+    print "trying to target {0}".format(name)
+    if Config.Targets.has_key(name):
+        print "targetting {0}".format(name)
+        Missile.run_command_set(Config.Targets[name])
+    else:
+        print "targetting default"
+        Missile.run_command_set(Config.Targets['default'])
+
+def display_state(build):
+    global teamCity, lastBuildId, buildBreakers
 
     if lastBuildId == build['id']:
         return
@@ -33,12 +44,19 @@ def set_state(build):
             say ('build {0} failed'.format(build['number']))
             Display.rgb(255, 0, 0)
             Lights.broken_build()
-        for breakage in teamCity.get_checkins(build):
-            say ('{0} broke the build'.format(breakage))
+        if buildBreakers == None:
+            buildBreakers = teamCity.get_checkins(build)
+            for breaker in buildBreakers:
+                target_missile(breaker.lower())
+            for breaker in buildBreakers:
+                say ('{0} broke the build'.format(breaker))
     else:
         Display.rgb(0, 255, 0)
         say ('build {0} succeeded'.format(build['number']))
         Lights.build_good()
+        if buildBreakers != None:
+            for fixer in teamCity.get_checkins(build):
+                say ('{0} fixed the build'.format(fixer))
 
 def connect():
     global teamCity
@@ -75,7 +93,7 @@ def report_status():
 
     build = teamCity.get_latest_build()
     if teamCity.build_finished(build):
-        set_state(build)
+        display_state(build)
     else:
         if currentBuildId == build['id']:
             return

@@ -28,6 +28,7 @@
     </Compile>
     <Compile Include="HostInfo.py" />
     <Compile Include="Lights.py" />
+    <Compile Include="Missile.py" />
     <Compile Include="Monitor.py" />
     <Compile Include="Platform.py">
       <SubType>Code</SubType>
