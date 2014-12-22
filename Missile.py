@@ -19,13 +19,13 @@ Fire  = 0x10
 Stop  = 0x20
 
 def send_cmd(cmd):
-    if Platform.is_raspberrypi():
+    if Platform.is_raspberrypi() and device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x02, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
         print "sending usb command {0}".format(cmd)
     
 def led(cmd):
-    if Platform.is_raspberrypi():
+    if Platform.is_raspberrypi() and device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x03, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
         print "sending missile led state {0}".format(cmd)
