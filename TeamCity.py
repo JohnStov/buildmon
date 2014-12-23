@@ -95,7 +95,8 @@ class TeamCity:
     def get_checkins(self, build):
         checkins = []
         for checkin in build["lastChanges"]["change"]:
-            checkins.append(checkin["username"])
+            #strip out everything up to the backslash
+            checkins.append(checkin["username"].split('\\', 1)[-1])
         return checkins
 
     def close(self):

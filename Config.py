@@ -10,7 +10,7 @@ StartTime = datetime.time(8, 00)
 StopTime = datetime.time(18, 00)
 
 Targets = {
-    "tribalgroup\john.stovin" : (
+    "john.stovin" : (
         ("zero", 0), # Zero/Park to know point (bottom-left)
         ("led", 1), # Turn the LED on
         ("right", 3250),
@@ -19,7 +19,7 @@ Targets = {
         ("led", 0), # Turn the LED back off
         ("zero", 0), # Park after use for next time
     ),
-    "tribalgroup\simon.bryan" : (
+    "simon.bryan" : (
         ("zero", 0), 
         ("right", 4400),
         ("up", 200),
@@ -33,6 +33,5 @@ Targets = {
         ("pause", 5000),
         ("left", 2200),
         ("down", 500),
-        ("zero", 0),
     ),
 }

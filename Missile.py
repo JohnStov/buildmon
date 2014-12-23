@@ -1,5 +1,7 @@
 import Platform
 
+device = None
+
 if Platform.is_raspberrypi():
     import usb.core
 
@@ -19,13 +21,17 @@ Fire  = 0x10
 Stop  = 0x20
 
 def send_cmd(cmd):
-    if Platform.is_raspberrypi() and device != None:
+    global device
+    
+    if device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x02, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
         print "sending usb command {0}".format(cmd)
     
 def led(cmd):
-    if Platform.is_raspberrypi() and device != None:
+    global device
+
+    if device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x03, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
         print "sending missile led state {0}".format(cmd)
@@ -33,9 +39,12 @@ def led(cmd):
 led(0)
 
 def send_move(cmd, duration_ms):
-    send_cmd(cmd)
-    time.sleep(duration_ms / 1000.0)
-    send_cmd(Stop)
+    global device
+
+    if device != None:
+        send_cmd(cmd)
+        time.sleep(duration_ms / 1000.0)
+        send_cmd(Stop)
 
 def run_command(command, value):
     command = command.lower()
