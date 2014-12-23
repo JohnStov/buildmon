@@ -55,6 +55,7 @@ def display_state(build):
         say ('build {0} succeeded'.format(build['number']))
         Lights.build_good()
         if buildBreakers != None:
+            buildBreakers = None
             for fixer in teamCity.get_checkins(build):
                 say ('{0} fixed the build'.format(fixer))
 
