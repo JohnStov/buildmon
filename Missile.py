@@ -26,7 +26,7 @@ def send_cmd(cmd):
     if device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x02, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
-        print "sending usb command {0}".format(cmd)
+        print("sending usb command {0}".format(cmd))
     
 def led(cmd):
     global device
@@ -34,7 +34,7 @@ def led(cmd):
     if device != None:
         device.ctrl_transfer(0x21, 0x09, 0, 0, [0x03, cmd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
     else:
-        print "sending missile led state {0}".format(cmd)
+        print("sending missile led state {0}".format(cmd))
 
 led(0)
 

@@ -4,6 +4,7 @@ import Config
 from TeamCity import TeamCity, NoConnection, NoBuild
 import Lights
 import Display
+import datetime
 import time
 import Missile
 
@@ -13,10 +14,17 @@ def initialize():
     Display.clear()
     Display.write("     Hello!     ")
 
+def go_to_sleep():
+    say('Goodnight')
+    Display.clear()
+    Display.rgb(0, 0, 0)
+    Lights.all_off()
+
 teamCity = None
 currentBuildId = None
 lastBuildId = None
 buildBreakers = None
+displayOn = True
 
 def target_missile(name):
     print "trying to target {0}".format(name)
@@ -24,7 +32,7 @@ def target_missile(name):
         print "targetting {0}".format(name)
         Missile.run_command_set(Config.Targets[name])
     else:
-        print "targetting default"
+        print "targeting default"
         Missile.run_command_set(Config.Targets['default'])
 
 def display_state(build):
@@ -117,6 +125,20 @@ def check_connection():
             say('trying again in one minute')
             time.sleep(60)
 
+def check_time():
+    global displayOn
+
+    now = datetime.datetime.now().time()
+    if now >= Config.StartTime and now <= Config.StopTime:
+        if displayOn == False:
+            initialize()
+        displayOn = True
+    else:
+        if displayOn == True:
+            go_to_sleep()
+        displayOn = False
+    return displayOn
+
 
 if __name__ == '__main__':
     initialize()
@@ -126,7 +148,9 @@ if __name__ == '__main__':
     say('monitoring build {0}'.format(Config.BuildType))
     
     while True:
-        connect()
-        report_status()
-        disconnect()
+        if check_time():
+            connect()
+            report_status()
+            disconnect()
+        
         time.sleep(Config.SleepSeconds)
