@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{57d0ee49-925b-463f-a198-4c9d2237071d}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>Monitor.py</StartupFile>
+    <StartupFile>Display.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

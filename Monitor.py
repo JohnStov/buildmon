@@ -58,14 +58,17 @@ def display_state(build):
                 target_missile(breaker.lower())
             for breaker in buildBreakers:
                 say ('{0} broke the build'.format(breaker))
+            Display.scroll(",".join(buildBreakers), 2)
     else:
         Display.rgb(0, 255, 0)
         play('./Jeopardy-ringin.mp3')
         Lights.build_good()
         if buildBreakers != None:
             buildBreakers = None
-            for fixer in teamCity.get_checkins(build):
+            fixers = teamCity.get_checkins(build)
+            for fixer in fixers:
                 say ('{0} fixed the build'.format(fixer))
+            Display.scroll(",".join(fixers), 2, 300)
 
 def connect():
     global teamCity
