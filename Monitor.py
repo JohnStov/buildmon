@@ -60,7 +60,7 @@ def display_state(build):
                 say ('{0} broke the build'.format(breaker))
     else:
         Display.rgb(0, 255, 0)
-        say ('build {0} succeeded'.format(build['number']))
+        play('./Jeopardy-ringin.mp3')
         Lights.build_good()
         if buildBreakers != None:
             buildBreakers = None
