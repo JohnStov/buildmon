@@ -1,4 +1,4 @@
-from Speech import say
+from Speech import say, play
 import HostInfo
 import Config
 from TeamCity import TeamCity, NoConnection, NoBuild
@@ -131,8 +131,10 @@ def check_connection():
 def check_time():
     global displayOn
 
-    now = datetime.datetime.now().time()
-    if now >= Config.StartTime and now <= Config.StopTime:
+    now = datetime.datetime.now()
+    nowTime = now.time()
+    nowDay = now.date().weekday()
+    if nowTime >= Config.StartTime and nowTime <= Config.StopTime and nowDay not in Config.StopDays:
         if displayOn == False:
             initialize()
         displayOn = True

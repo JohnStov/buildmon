@@ -7,6 +7,7 @@ BuildType = 'ClientExams_Build'
 SleepSeconds = 10
 StartTime = datetime.time(9, 30)
 StopTime = datetime.time(16, 30)
+StopDays = [5, 6] # Saturday and Sunday
 
 Targets = {
     "john.stovin" : (
