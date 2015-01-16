@@ -5,8 +5,8 @@ import datetime
 Url = 'http://4g5965j-dt2-s:88'
 BuildType = 'ClientExams_Build'
 SleepSeconds = 10
-StartTime = datetime.time(9, 30)
-StopTime = datetime.time(16, 30)
+StartTime = datetime.time(8, 0)
+StopTime = datetime.time(18, 0)
 StopDays = [5, 6] # Saturday and Sunday
 
 Targets = {
