@@ -61,7 +61,7 @@ def display_state(build):
             Display.scroll(",".join(buildBreakers), 2)
     else:
         Display.rgb(0, 255, 0)
-        play('./Jeopardy-ringin.mp3')
+        play('/home/pi/buildmon/Jeopardy-ringin.mp3')
         Lights.build_good()
         if buildBreakers != None:
             buildBreakers = None
